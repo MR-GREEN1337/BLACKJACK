@@ -1,0 +1,125 @@
+def paquet():
+    s = ''
+    paquet = []
+    j = 0
+    l = ["As","Roi", "Dame", "Valet"]
+    type = ["carreaux", "trèfles", "coeurs", "piques"]
+    while j < 4:
+        for i in range(2,11):
+            s = str(i) + " de "+ type[j]
+            paquet.append(s)
+        j += 1    
+    j = 0
+    i = 0
+    while j< len(type) :  
+        for i in range(len(l)):
+            s = l[i]+ " de "+ type[j]
+            paquet.append(s)  
+        j += 1    
+    return paquet
+def valeurCarte(carte):
+    l = (carte.split(' '))
+    nombre = (carte.split(' '))[0]
+    if nombre in '12345678910':
+        nombre = int((carte.split(' '))[0])
+        while nombre >10:
+            nombre = int(input("Entrer une valeur exacte de la carte: "))
+    if nombre in range(2,11):
+        valeur = nombre
+    elif str(nombre).lower() in ["roi", "dame", "valet"]:
+        valeur = 10
+    elif str(nombre).lower() == "as":
+        valeur = 2
+        while valeur not in [1, 11]:
+            valeur = int(input("Quelle valeur souhaitez-vous? (1 ou 11?) ")) 
+    l[0] = str(nombre)
+    carte = ' '.join(l)
+    s = "La valeur de la carte " + "' " + carte + " ' est: " + str(valeur)  
+    return s  
+#print(valeurCarte("23 de trèfle"))    
+def initPioche(n):
+    import random
+    pioche = []
+    i = 0
+    while i < n:
+        pioche.extend(paquet())
+        i += 1
+    i = 0
+    while i < len(pioche):
+        a = random.randint(0,len(pioche)-1)
+        b = random.randint(0,len(pioche)-1)
+        temp = pioche[b]   
+        pioche[b] = pioche[a]
+        pioche[a] = temp
+        i += 1
+    return pioche
+#print(initPioche(3))    
+def piocheCarte(pioche, x):
+    import random
+    i = 0
+    l = []
+    while i < x:
+        a = random.randint(0, len(pioche)-1)
+        l.append(pioche[a])
+        pioche.pop(a)
+        i += 1
+    return l
+#print(piocheCarte(initPioche(4), 7))        
+def initJoueurs(n):
+    Joueurs = []
+    for i in range(1,n + 1):
+        a = input("Joueur " + str(i) + ": ")
+        Joueurs.append(a)
+    return Joueurs
+#print(initJoueurs(4))        
+def initScores(joueurs):
+    dictionnaire = {}
+    for i in range(len(joueurs)):
+        dictionnaire[joueurs[i]] = 0
+    return dictionnaire
+#print(initScores(["SAL", "ADAM", "LISE"]))
+
+def premierTourjoueurs(joueurs):
+    score_joueurs = initScores(joueurs)
+    
+    for i in range(len(joueurs)):
+        k = 0
+        s = piocheCarte(initPioche(1), 2)
+        x = s[i]
+        for j in range(2):
+            y = x[j]
+            print(valeurCarte(y))
+            #k += valeurCarte(y)
+        #print(x)
+        score_joueurs[joueurs[i]] = k
+    #return score_joueurs
+print(premierTourjoueurs(["Hi", "Sam", "ASJZ"]))
+        
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
