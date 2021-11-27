@@ -1,69 +1,3 @@
-def boucle():
-    i = 0
-    a = int(input("Entrer un nombre de lignes: "))
-    while i <= a:
-        k = (a-i)*' ' + i*'*' 
-        i +=1
-        print(k)
-def pyramide():
-    i =0
-    a = int(input("Entrer un nombre de lignes"))
-    while i <= a:
-        k = (a-i)*' ' +(2*i + 1)*'*'
-        i += 1
-        print(k)
-def pyr_nombre():
-    i = 1
-    b = ''
-    a = int(input("Entrer un nombre de lignes: "))
-    while i <= a:
-        b  += str(i) + ' '
-        i += 1
-        print(b)
-        b  += str(i) + ' '
-    print(b)    
-def ailes(a):
-    i = 0
-    temp = a 
-    j = 2
-    b =''
-    while i<=a:
-        b = 2*(temp)*' ' + i*'^' + 2*(i-1)*' ' + i*'^'
-        print(b)
-        i += 1
-        temp -= 1     
-def alphabet():
-    l = list('abcdefghijklmnopqrstuvwxyz')
-    i = 0
-    s = ''   
-    count = 0
-    while i <= len(l):     
-        s = ''
-        j = 1
-        while j <= i:
-            s += l[count] + ' '
-            count += 1
-            j += 1
-        print(s)    
-    i += 1
-def moutons():
-    a = int(input("Entrer un nombre de moutons"))
-    j = 0
-    for i in range(1, a + 1):
-    
-        print(i, "mouton" + j*"s")
-        j = 1 
-def mot_de_passe():
-    import random
-    s =''
-    i = 0
-    l = list("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@_)(_'")    
-    for i in range(0,15):
-        a = random.randint(0, len(l)-1)
-        s += l[a]
-        i += 1
-    return s
-#print(mot_de_passe())
 
 def paquet():
     s = ''
@@ -230,9 +164,9 @@ def tourComplet(n):
         j += 1
     return l
      
-def partieComplete(n):
+def partieComplete(n,a):
     score_final = {}
-    a = int(input("Combien de joueurs?"))
+    
     l_joueurs = tourComplet(a)
     for i in range(a):
         round = "Round " + str(i+1)
@@ -242,7 +176,19 @@ def partieComplete(n):
         l_joueurs.pop(0)
     print(score_final)    
     
-print(partieComplete(2))    
+a = int(input("Combien de joueurs vont participer a notre jeu ?"))
+print(partieComplete(2,a))
+g=input("voulez-vous rejouer a ce jeu ? ")
+TR=["yes","oui","si","bien sur","ok"]
+FL=["no","non","pas envie"]
+if g in TR :
+    print(partieComplete(2,a))
+elif g in FL :
+    print("merci d'avoir joue a notre jeu et a la prochaine !")
+else :
+    g=input("voulez-vous rejouer a ce jeu ? ")
+    
+   
         
         
     
