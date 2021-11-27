@@ -161,8 +161,8 @@ def gagnant(scores):
     max = 0
     gagnant = ''
     for i in range(len(joueur)):
-        if  max<=(scores[joueur[i]][joueur[i]])<=21 :
-            max = (scores[joueur[i]][joueur[i]])
+        if  max<=(scores[joueur[i]])<=21 :
+            max = (scores[joueur[i]])
             gagnant = joueur[i]
     s = "le gagnant est : " + gagnant + " avec le score: " + str(max)
     print(s)
@@ -236,64 +236,11 @@ def partieComplete(n):
     l_joueurs = tourComplet(a)
     for i in range(a):
         round = "Round " + str(i+1)
-        b = tourJoueur(l_joueurs)
+        print(round)
+        b = tourJoueur(l_joueurs)[l_joueurs[0]]
         score_final[l_joueurs[0]] = b
         l_joueurs.pop(0)
-    print(gagnant(score_final))      
+    print(score_final)    
     
 print(partieComplete(2))    
         
-        
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
