@@ -193,7 +193,19 @@ while boole == True:
         print("merci d'avoir joue a notre jeu et a la prochaine !")
         boole = False
         break
- 
+        
+        
+#i=0
+while i<1000: 
+   g=input("voulez-vous rejouer a ce jeu ? ")
+   if g in ["yes","oui","si","bien sur","ok"] :
+       n = int(input("Combien de tours ?"))
+       print(partieComplete(n,a))
+       print(gagnant(partieComplete(n,a)))
+       i=i+1
+   elif g in ["no","non","pas envie"] :
+       print("merci d'avoir joue a notre jeu et a la prochaine !")
+       break
         
         
     
