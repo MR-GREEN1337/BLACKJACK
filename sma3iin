@@ -1,0 +1,292 @@
+def paquet():
+    s = ''
+    paquet = []
+    j = 0
+    l = ["As","Roi", "Dame", "Valet"]
+    type = ["carreaux", "trèfles", "coeurs", "piques"]
+    while j < 4:
+        for i in range(2,11):
+            s = str(i) + " de "+ type[j]
+            paquet.append(s)
+        j += 1    
+    j = 0
+    i = 0
+    while j< len(type) :  
+        for i in range(len(l)):
+            s = l[i]+ " de "+ type[j]
+            paquet.append(s)  
+        j += 1    
+    return paquet
+def valeurCarte(carte):
+    l = (carte.split(' '))
+    nombre = (carte.split(' '))[0]
+    if nombre in '12345678910':
+        nombre = int((carte.split(' '))[0])
+        while nombre >10:
+            nombre = int(input("Entrer une valeur exacte de la carte: "))
+    if nombre in range(2,11):
+        valeur = nombre
+    elif str(nombre).lower() in ["roi", "dame", "valet"]:
+        valeur = 10
+    elif str(nombre).lower() == "as":
+        valeur = 2
+        while valeur not in [1, 11]:
+            valeur = int(input(f'Quelle valeur souhaitez-vous? (1 ou 11?) ')) 
+    l[0] = str(nombre)
+    carte = ' '.join(l)
+    s = "La valeur de la carte " + "' " + carte + " ' est: " + str(valeur)  
+    return valeur  
+#print(valeurCarte("23 de trèfle"))    
+def initPioche(n):
+    import random
+    pioche = []
+    i = 0
+    while i < n:
+        pioche.extend(paquet())
+        i += 1
+    i = 0
+    while i < len(pioche):
+        a = random.randint(0,len(pioche)-1)
+        b = random.randint(0,len(pioche)-1)
+        temp = pioche[b]   
+        pioche[b] = pioche[a]
+        pioche[a] = temp
+        i += 1
+    return pioche
+#print(initPioche(3))    
+def piocheCarte(pioche, x):
+    import random
+    i = 0
+    l = []
+    while i < x:
+        a = random.randint(0, len(pioche)-1)
+        l.append(pioche[a])
+        pioche.pop(a)
+        i += 1
+    return l
+#print(piocheCarte(initPioche(4), 7))        
+def initJoueurs(n):
+    Joueurs = []
+    for i in range(1,n + 1):
+        a = input("Joueur " + str(i) + ": ")
+        Joueurs.append(a)
+    return Joueurs
+#print(initJoueurs(4))        
+def initScores(joueurs):
+    dictionnaire = {}
+    for i in range(len(joueurs)):
+        dictionnaire[joueurs[i]] = 0
+    return dictionnaire
+#print(initScores(["SAL", "ADAM", "LISE"]))
+
+def premierTour(joueurs):
+    score_joueurs = initScores(joueurs)
+    
+    for i in range(len(joueurs)):
+        for j in range(2):
+            s = piocheCarte(initPioche(1), 2)
+            score_joueurs[joueurs[i]] += valeurCarte(s[j])
+            
+    return score_joueurs
+#print(premierTour(["Hi", "Sam", "ASJZ"]))
+def gagnant(scores):
+    joueur = list(scores.keys())
+    max = 0
+    gagnant = ''
+    for i in range(len(joueur)):
+        if  max<=(scores[joueur[i]])<=21 :
+            max = scores[joueur[i]]
+            gagnant = joueur[i]        
+        s = "le gagnant est : " + gagnant + " avec le score: " + str(max)
+    if gagnant == '':
+        s = "i l n y'a pas de gagnants dans cette partie "
+    return s, gagnant
+    
+#print(gagnant(premierTourjoueurs(initJoueurs(3))))        
+def continuer():
+    oui =["oui","yes","continue","continuer","go"]
+    non = ["stop","non","no","clear","pas"]
+    a = input("Do you wanna continue or not? \n")
+    while (a not in oui) and (a not in non):
+        a = input("Tu veux continuer ou pas?(Je suis qu'un robot, j'ai pas compris :) \n")
+        pass
+    if a.lower() in oui:
+        return True
+    elif a.lower() in non:
+        return False
+#print(continuer())    
+def tourJoueur(j):
+    
+    num_tour = 1
+    score = initScores(j) 
+    score_joueurs = 0
+    continuer = False         
+    i = 0        
+    while i<1:
+        j = j[0]
+        continuer = True
+        i += 1
+    print("Nom du joueur: " + j + "\n")    
+    while continuer == True:
+        scoree = "Votre score est : " + str(score[j]) + "\n"
+        print("Le tour Numéro "+ str(num_tour) + "\n")
+        print(scoree)
+        if score == 21:
+            print("You win")
+            break
+        if score[j] > 21:
+            print("You lose")
+            break        
+        oui =["oui","yes","continue","continuer","go"]
+        non = ["stop","non","no","clear","pas"]
+        a = input("Tu veux continuer ou pas? \n")
+        while (a not in oui) and (a not in non):
+            a = input("Tu veux continuer ou pas?(Je suis qu'un robot, j'ai pas compris :) \n")
+        if a.lower() in oui:
+            continuer =  True
+        elif a.lower() in non:
+            continuer = False     
+        for i in range(1):
+            s = piocheCarte(initPioche(1), 1)
+            score_joueurs = valeurCarte(s[0])          
+        score[j] += score_joueurs
+        num_tour += 1
+    return score     
+#print(tourJoueur(["Islam"]))        
+def tourComplet(n):   
+    scores = {}
+    a = initJoueurs(n)
+    temp = a
+    i = 0
+    j = 0
+    for i in range(len(a)):
+        scores[temp[i]] = tourJoueur([temp[i]])[temp[i]]
+        j += 1
+    return scores,a   
+     
+def partieComplete(n,a):
+    k = 0
+    score_final = {}
+    victoires = {}
+    l_joueurs = initJoueurs(a)
+    temp = l_joueurs.copy()
+    round = "Round " + str(k+1)
+    for i in range(a):
+        victoires[l_joueurs[i]] = 0
+    for j in range(n):
+        print(round)
+        b = tourJoueur(l_joueurs)[l_joueurs[0]]
+        score_final[l_joueurs[0]] = b
+        l_joueurs.pop(0)
+        if gagnant(score_final)[1] != None and gagnant(score_final)[1] != '' and gagnant(score_final)[1] != 'n':
+            victoires[gagnant(score_final)[1]] += 1
+        if temp[i] != temp[-1]:    
+            k = 0
+        elif temp == temp[-1]:
+            k += 1            
+    return victoires, score_final      
+
+ 
+def aleatoire():
+    n = int(input("Combien de joueurs? "))
+    joueurs = {}
+    l_j = []
+    somme = 0
+    for i in range(n):
+        a = input("Joueur " + str(i+1) + " ")
+        nb_mises = int(input(f'{a} Combien de kopecs tu veux miser? '))
+        joueurs[a] = nb_mises
+        l_j.append(a)
+    joueurs["croupier"] = 10  
+    continuee = True
+    for i in range(len(l_j)):
+        x = premierTour(l_j)
+        if continuee == True:
+            val = valeurCarte(piocheCarte(initPioche(1), 1)[0])
+            joueurs["croupier"] += val
+            print("Le croupier a pioché "+ str(val))
+            continuee = continuer()
+        if joueurs["croupier"]>21:
+            print("Le croupier perd, avec un score de "+ str(joueurs["croupier"]))
+        print(f"{l_j[i]} t'as eu {x[l_j[i]]} au score")
+        reponse = input(f"{l_j[i]} tu veux continuer?")
+        if reponse in ["no","non","pas envie"] :
+            print("merci d'avoir joue a notre jeu et à la prochaine !")
+            del x[l_j[i]] 
+    print(gagnant(x)[0])
+    for i in range(len(l_j)):
+        somme += joueurs[l_j[i]]    
+    print("Le joueur "+gagnant(x)[1] + " a gagné "+ str(somme) + " kopecs")          
+        
+print(aleatoire()) 
+def croupier(p):
+    i = 0
+    score = 0
+    écart = 21-score
+    dict = {}
+    dict["croupier"] = 0
+    if p == 1:
+        while i < 10:
+            score += valeurCarte(piocheCarte(initPioche(1), 1)[0])
+            i += 1
+    elif p == 0:       
+        score = 0
+    elif p == 0.5:
+        while écart > 5:
+            val = valeurCarte(piocheCarte(initPioche(1), 1)[0])
+            score += val
+            dict["croupier"] += val         
+        
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
