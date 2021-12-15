@@ -1,0 +1,42 @@
+a = int(input("Combien de joueurs vont participer a notre jeu ?"))
+n = int(input("Combien de tours"))
+i = 0
+while i<1:
+    boole = True
+    i += 1
+while boole == True: 
+    a = partieComplete(n,a)
+    print(a)
+    print(gagnant(a[1])[0])
+    g=input("voulez-vous rejouer a ce jeu ? ")
+    if g in ["yes","oui","si","bien sur","ok"] :
+        boole = True
+    elif g in ["no","non","pas envie"] :
+        print("merci d'avoir joue a notre jeu et a la prochaine !")
+        boole = False
+        break
+    
+    -------------------------------------------------------------------
+    n = int(input("Combien de joueurs? "))
+    joueurs = {}
+    l_j = []
+    somme = 0
+    for i in range(n):
+        a = input("Joueur " + str(i+1) + " ")
+        nb_mises = int(input(f'{a} Combien de kopecs tu veux miser? '))
+        joueurs[a] = nb_mises
+        l_j.append(a)
+    x = premierTour(l_j)
+    for i in range(len(l_j)):
+        print(f"{l_j[i]} t'as eu {x[l_j[i]]} au score")
+        reponse = input("tu veux continuer?")
+        if reponse in ["yes","oui","si","bien sur","ok"] :
+            booll = True
+        elif reponse in ["no","non","pas envie"] :
+            print("merci d'avoir joue a notre jeu et a la prochaine !")
+            booll = False
+            del x[l_j[i]] 
+    print(gagnant(x)[0])
+    for i in range(len(l_j)):
+        somme += joueurs[l_j[i]]    
+    print("Le joueur "+gagnant(x)[1] + " a gagné "+ str(somme) + " kopecs") 
